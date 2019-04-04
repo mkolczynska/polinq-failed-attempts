@@ -5,7 +5,8 @@ title: |
   | \vspace{1cm}Report - reseach note - document*^[*This is a draft. Do not quote, cite, or distribute.]\vspace{0.5cm}
   |
 author: |
-  | 
+  | Marta Kołczyńska
+  | Institute of Philosophy and Sociology, Polish Academy of Sciences
 date: |
   |       
   |
@@ -66,7 +67,7 @@ knitr::knit_hooks$set(chunk = function(x, options) {
 
 \clearpage
 
-# The problem
+# Introduction
 
 Political participation is an important aspect of civic engagement, and the inequality of political participation might be a symptom of either unequal opportunities for participation, the cause of unequal influence over policy decisions, or both.
 
@@ -102,8 +103,6 @@ myPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2",
 
 ess7_full <- import("data/ess7_full.csv")
 
-ess_part_vars <- c("org", "party", "demo", "contact", "petition", "boycott")
-
 ess7 <- recode_missings(ess7_full) %>% 
   mutate(org = plyr::mapvalues(wrkorg, from = c(1,2,NA), to = c(1,0,NA)),
          party = plyr::mapvalues(wrkprty, from = c(1,2,NA), to = c(1,0,NA)),
@@ -123,13 +122,11 @@ ess7 <- recode_missings(ess7_full) %>%
            TRUE ~ 0),
          party_org = ifelse(is.na(party) & is.na(org), NA, party_org)) %>%
   filter(agea >= 18 & agea <= 65) %>%
-  select(ess_part_vars, polint, party_org, cntry, pspwght, vote,
+  select(party_org, demo, contact, petition, boycott,
+         polint, cntry, pspwght, vote,
          age_cat, female, educ3)
 
-ess_part_vars1 <- c("party_org", "demo", "contact", "petition", "boycott")
-
-ess7_cntry <- ess7 %>% group_by(cntry) %>% 
-  summarise_at(ess_part_vars1, funs(weighted.mean(., pspwght)), na.rm = TRUE)
+ess_part_vars <- c("party_org", "demo", "contact", "petition", "boycott")
 
 ### ISSP data
 
@@ -162,41 +159,35 @@ issp2014 <- issp2014_full %>%
     demo_rally = ifelse(is.na(demo) & is.na(rally), NA, demo_rally),
     cntry = C_ALPHAN) %>%
   filter(AGE >= 18 & AGE <= 65) %>%
-  select(cntry, issp_part_vars, party_tradeu, demo_rally, polint, WEIGHT, vote,
-         age_cat, female, educ3)
+  select(cntry, party_tradeu, demo_rally, contact, petition, boycott,
+         polint, WEIGHT, vote, age_cat, female, educ3)
 
-issp_part_vars1 <- c("party_tradeu", "demo_rally", "contact", "petition", "boycott")
-
-issp_cntry <- issp2014 %>% group_by(cntry) %>% 
-  summarise_at(issp_part_vars1, funs(weighted.mean(., WEIGHT)), na.rm = TRUE)
+issp_part_vars <- c("party_tradeu", "demo_rally", "contact", "petition", "boycott")
 
 
 ### ESS weights and polpart ------------------------------
 
-ess_part_vars1 <- c("party_org", "demo", "contact", "petition", "boycott")
-
 ess7_cntry <- ess7 %>% group_by(cntry) %>% 
-  summarise_at(ess_part_vars1, funs(weighted.mean(., pspwght)), na.rm = TRUE)
+  summarise_at(ess_part_vars, funs(weighted.mean(., pspwght)), na.rm = TRUE)
 
-
-ess_weight_z <- as.data.frame(qnorm(as.matrix(ess7_cntry[ess_part_vars1]), 
+ess_weight_z <- as.data.frame(qnorm(as.matrix(ess7_cntry[ess_part_vars]), 
                                 lower.tail = FALSE))
 newnames <- paste(colnames(ess_weight_z), "_weight_z", sep="")
 colnames(ess_weight_z) <- newnames
 
-ess_weight_ln <- log(1 / ess7_cntry[ess_part_vars1])
+ess_weight_ln <- log(1 / ess7_cntry[ess_part_vars])
 newnames <- paste(colnames(ess_weight_ln), "_weight_ln", sep="")
 colnames(ess_weight_ln) <- newnames
 
 ess_weight_rank <- as.data.frame(cbind(rep(5, nrow(ess7_cntry)), rep(4, nrow(ess7_cntry)),
                                    rep(3, nrow(ess7_cntry)), rep(2, nrow(ess7_cntry)),
                                    rep(1, nrow(ess7_cntry))))
-newnames <- paste(colnames(ess7_cntry[c(ess_part_vars1)]), "_weight_rank", sep="")
+newnames <- paste(colnames(ess7_cntry[c(ess_part_vars)]), "_weight_rank", sep="")
 colnames(ess_weight_rank) <- newnames
 
 weight <- bind_cols(ess7_cntry[,c(1)], ess_weight_z, ess_weight_ln, ess_weight_rank)
 
-ess7_full <- left_join(ess7[,c("cntry", "pspwght", "polint", ess_part_vars1)], weight, by = c("cntry"))
+ess7_full <- left_join(ess7[,c("cntry", "pspwght", "polint", ess_part_vars)], weight, by = c("cntry"))
 
 ess7_full$polpart_z <- rowSums(mapply(`*`,ess7_full[,4:8],ess7_full[,9:13]), na.rm = TRUE)
 ess7_full$polpart_z <- round(ess7_full$polpart_z,3)
@@ -209,14 +200,14 @@ ess7_full$polpart_rank <- round(ess7_full$polpart_rank,3)
 
 ess7_full <- data.frame(ess7_full) %>%
   filter(!is.na(polpart_rank)) %>%
-  mutate(polpart_sum = rowSums(select(., ess_part_vars1)),
+  mutate(polpart_sum = rowSums(select(., ess_part_vars)),
          polpart_any = as.numeric(polpart_sum %in% c(1:5)),
          polpart_concat = paste(party_org, demo, contact, petition, boycott))
   
 
 ### ESS/7 country data & inequality ---------------------
 
-ess_vars <- c(ess_part_vars1, "polpart_z", "polpart_ln", "polpart_rank", "polpart_sum", "polpart_any")
+ess_vars <- c(ess_part_vars, "polpart_z", "polpart_ln", "polpart_rank", "polpart_sum", "polpart_any")
 
 # country means of each activity and the two participation indices (weighted and unweighted)
 ess_cntrydata <- ess7_full %>%  group_by(cntry) %>% 
@@ -240,30 +231,28 @@ ess_cntrydata <- ess7_full %>%
 
 ### ISSP weights and polpart ----------------------
 
-issp_part_vars1 <- c("party_tradeu", "demo_rally", "contact", "petition", "boycott")
-
 issp_cntry <- issp2014 %>% group_by(cntry) %>% 
-  summarise_at(issp_part_vars1, funs(weighted.mean(., WEIGHT)), na.rm = TRUE)
+  summarise_at(issp_part_vars, funs(weighted.mean(., WEIGHT)), na.rm = TRUE)
 
 
-issp_weight_z <- as.data.frame(qnorm(as.matrix(issp_cntry[issp_part_vars1]), 
+issp_weight_z <- as.data.frame(qnorm(as.matrix(issp_cntry[issp_part_vars]), 
                                 lower.tail = FALSE))
 newnames <- paste(colnames(issp_weight_z), "_weight_z", sep="")
 colnames(issp_weight_z) <- newnames
 
-issp_weight_ln <- log(1 / issp_cntry[issp_part_vars1])
+issp_weight_ln <- log(1 / issp_cntry[issp_part_vars])
 newnames <- paste(colnames(issp_weight_ln), "_weight_ln", sep="")
 colnames(issp_weight_ln) <- newnames
 
 issp_weight_rank <- as.data.frame(cbind(rep(5, nrow(issp_cntry)), rep(4, nrow(issp_cntry)),
                                    rep(3, nrow(issp_cntry)), rep(2, nrow(issp_cntry)),
                                    rep(1, nrow(issp_cntry))))
-newnames <- paste(colnames(issp_cntry[c(issp_part_vars1)]), "_weight_rank", sep="")
+newnames <- paste(colnames(issp_cntry[c(issp_part_vars)]), "_weight_rank", sep="")
 colnames(issp_weight_rank) <- newnames
 
 issp_weight <- bind_cols(issp_cntry[,c(1)], issp_weight_z, issp_weight_ln, issp_weight_rank)
 
-issp_full <- left_join(issp2014[,c("cntry", "WEIGHT", "polint", issp_part_vars1)], issp_weight, by = c("cntry"))
+issp_full <- left_join(issp2014[,c("cntry", "WEIGHT", "polint", issp_part_vars)], issp_weight, by = c("cntry"))
 
 issp_full$polpart_z <- rowSums(mapply(`*`,issp_full[,4:8],issp_full[,9:13]), na.rm = TRUE)
 issp_full$polpart_z <- round(issp_full$polpart_z,3)
@@ -276,14 +265,14 @@ issp_full$polpart_rank <- round(issp_full$polpart_rank,3)
 
 issp_full <- data.frame(issp_full) %>%
   filter(!is.na(polpart_rank)) %>%
-  mutate(polpart_sum = rowSums(select(., issp_part_vars1)),
+  mutate(polpart_sum = rowSums(select(., issp_part_vars)),
          polpart_any = as.numeric(polpart_sum %in% c(1:5)),
          polpart_concat = paste(party_tradeu, demo_rally, contact, petition, boycott))
 
 
 ### ISSP/2014 country data & inequality ---------------------
 
-issp_vars <- c(issp_part_vars1, "polpart_z", "polpart_ln", "polpart_rank", "polpart_sum", "polpart_any")
+issp_vars <- c(issp_part_vars, "polpart_z", "polpart_ln", "polpart_rank", "polpart_sum", "polpart_any")
 
 # country means of each activity and the two participation indices (weighted and unweighted)
 issp_cntrydata <- issp_full %>%  group_by(cntry) %>% 
@@ -381,11 +370,6 @@ cbind(indicator, ess_part_ind, issp_part_ind) %>%
                                   "scale_down",
                                   "HOLD_position"),
                 font_size = 10)
-# %>%
-#   column_spec(1, width = "2em") %>%
-#   column_spec(2, width = "4em") %>%
-#   column_spec(3, width = "6em")
-
 ```
 
 ## Selected activities
@@ -403,6 +387,7 @@ The scatter plot in Figure \@ref(fig:part-rate-dot-plot) shows participation lev
 
 
 ```{r part-rate-dot-plot, fig.align="center", fig.cap="Participation levels in single activities", fig.pos="H", fig.width=6, fig.height=4, echo=FALSE, warning=FALSE, message=FALSE, paged.print=FALSE}
+
 issp_cntry1 <- issp_cntrydata %>%
   gather(indicator, value, 2:16) %>%
   mutate(indicator = ifelse(substr(indicator, 1, 5) == "party", "party", indicator),
@@ -422,7 +407,6 @@ ess_issp_cntrydata %>%
   ggplot(., aes(x = ESS, y = ISSP, col = indicator)) + 
   geom_point(size = 2) +
   geom_abline(intercept = 0, slope = 1) +
-  geom_text(aes(label=cntry), size=3, hjust = 0, nudge_x = 0.007) +
   labs(caption = 
          "Source data: ESS/7 and ISSP/2014; overlapping countries; \nages 18-65 only; case weights applied.") +
   xlim(0, 0.5) + ylim(0, 0.5) +
@@ -444,11 +428,12 @@ To account for possible sample composition differences, weights were calculated 
 Table \@ref(tab:sample-re-weighting) shows correlations between sample proportions in the ESS and in the (un-weighted) ISSP, and the same correlations between ESS and ISSP re-weighted to match sample proportions from the ESS. In all cases the correlations with the re-weighted data are weaker, with the largest difference for work in a political party (0.57 compared to 0.34), and smaller declines in the case of the other activities.
 
 ```{r sample-re-weighting, echo=FALSE, warning=FALSE, message=FALSE}
+
 issp2014_cntries <- unique(substr(issp2014$cntry, 1, 2))
 ess7_cntries <- unique(substr(ess7$cntry, 1, 2))
 
-ess_part_varsa <- c("party_org", "demo", "contact", "petition", "boycott")
-issp_part_varsa <- c("party_tradeu", "demo_rally", "contact", "petition", "boycott")
+ess_part_vars <- c("party_org", "demo", "contact", "petition", "boycott")
+issp_part_vars <- c("party_tradeu", "demo_rally", "contact", "petition", "boycott")
 
 common_countries <- intersect(ess7_cntries, issp2014_cntries)
 
@@ -485,14 +470,14 @@ issp2014_w <- issp2014 %>%
 
 issp_cntry_w_cat <- issp2014_w %>% group_by(cntry) %>%
   filter(!is.na(issp_weight)) %>%
-  summarise_at(issp_part_varsa, funs(isspw = weighted.mean(., issp_weight)), na.rm = TRUE)
+  summarise_at(issp_part_vars, funs(isspw = weighted.mean(., issp_weight)), na.rm = TRUE)
 
 issp_cntry_cat <- issp2014_w %>% group_by(cntry) %>%
-  summarise_at(issp_part_varsa, funs(issp = weighted.mean(., WEIGHT)), na.rm = TRUE)
+  summarise_at(issp_part_vars, funs(issp = weighted.mean(., WEIGHT)), na.rm = TRUE)
 
 ess_cntry_cat <- ess7 %>% group_by(cntry) %>%
   filter(cntry %in% unique(issp2014$cntry)) %>%
-  summarise_at(ess_part_varsa, funs(ess = weighted.mean(., pspwght)), na.rm = TRUE)
+  summarise_at(ess_part_vars, funs(ess = weighted.mean(., pspwght)), na.rm = TRUE)
 
 full_join(issp_cntry_w_cat, issp_cntry_cat) %>%
   full_join(ess_cntry_cat) %>%
@@ -517,15 +502,15 @@ full_join(issp_cntry_w_cat, issp_cntry_cat) %>%
 
 In the second attempt a different approach was explored. The question was whether the extent to which political participation is associated with basic socio-demographic variables (age, gender, and education) varies across countries, and whether it is consistent within countries in the two survey projects, ESS and ISSP.
 
-Canonical correlations were calculated for five binary variables corresponding to the five activities on one side, and gender, age (3 categories) and education (3 categories) on the other. Figure \@ref(fig:can-cor) shows the correlation coefficients for all countries covered by both ESS and ISSP.
+Canonical correlations were calculated for five binary variables corresponding to the five activities on one side, and gender, age (3 categories) and education (3 categories) on the other. Figure \@ref(fig:can-cor) shows the correlation coefficients for all countries covered by both ESS and ISSP. The correlation between both series is around 0.2.
 
 
-```{r can-cor, echo=FALSE, warning=FALSE, message=FALSE, fig.align="center", fig.cap="Canonical correlations between participation and sociodemograhics: ESS/7 and ISSP/2014"}
+```{r can-cor, echo=FALSE, warning=FALSE, message=FALSE, fig.align="center", fig.cap="Canonical correlations between participation and sociodemograhics: ESS/7 and ISSP/2014", fig.pos="H", fig.width=5, fig.height=3.5}
 # ESS
 
 ess7.cc <- ess7 %>%
   drop_na() %>%
-  dummy_cols(.,
+  dummy_cols(., 
              select_columns = c("age_cat", "educ3")) %>%
   select(-c(age_cat, educ3, educ3_1, `age_cat_[18,30)`, polint, pspwght, vote))
 
@@ -568,11 +553,7 @@ full_join(ess.cor, issp.cor) %>%
   xlab("ESS") +
   theme_bw() +
   geom_abline(intercept = 0, slope = 1, col = "darkred") +
-  theme_bw() + 
-  ggrepel::geom_label_repel(aes(label = cntry),
-                   box.padding   = 0.35, 
-                   point.padding = 0.5,
-                   segment.color = 'grey50')
+  theme_bw()
 ```
 
 
@@ -599,13 +580,13 @@ The fifth political participation indicator to served as a benchmark:
 For each of the five variants of weights the Political Participation Score (PPS) was calculated for each individual. Sample means of PPS for countries that appear in both ESS and in ISSP are shown in Figure \@ref(fig:part-level-dot-plot).
 
 ```{r part-level-dot-plot, fig.align="center", fig.cap="Political participation levels by indicator type", fig.pos="H", fig.width=6, fig.height=4, echo=FALSE, warning=FALSE, message=FALSE, paged.print=FALSE}
+
 ess_issp_cntrydata %>%
   filter(substr(indicator, 1, 7) == "polpart") %>%
   spread(survey, value) %>%
   ggplot(., aes(x = ESS, y = ISSP, col = indicator)) + 
   geom_point(size = 2) +
   geom_abline(intercept = 0, slope = 1) +
-  geom_text(aes(label=cntry), size=3, hjust = 0, nudge_x = 0.05) +
   labs(caption = 
          "Source data: ESS/7 and ISSP/2014; overlapping countries; \nages 18-65 only; case weights applied.") +
   xlim(0, 4) + ylim(0, 4) +
