@@ -91,7 +91,7 @@ myPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2",
 
 ### ESS data
 
-ess7_full <- import("data/ess7_full.csv")
+ess7_full <- import("../data/ess7_full.csv")
 
 ess7 <- recode_missings(ess7_full) %>% 
   mutate(org = plyr::mapvalues(wrkorg, from = c(1,2,NA), to = c(1,0,NA)),
@@ -642,7 +642,7 @@ The graphs below show these ratios for each country, separately for the ESS and 
 #             ci95hi = quantile(ratio_11_00, probs = c(0.975)),
 #             mean_ratio_11_00 = mean(ratio_11_00))
 
-ess_ci <- rio::import("data/ess_ci.csv")
+ess_ci <- rio::import("../data/ess_ci.csv")
 
 ggplot(ess_ci, aes(x=reorder(cntry, mean_ratio_11_00), y=mean_ratio_11_00)) +
   geom_errorbar(aes(ymin=ci95lo, ymax=ci95hi), width=.1, position=position_dodge(0.1)) +
@@ -699,7 +699,7 @@ ggplot(ess_ci, aes(x=reorder(cntry, mean_ratio_11_00), y=mean_ratio_11_00)) +
 #             ci95hi = quantile(ratio_11_00, probs = c(0.975), na.rm = TRUE),
 #             mean_ratio_11_00 = mean(ratio_11_00, na.rm = TRUE))
 
-issp_ci <- rio::import("data/issp_ci.csv")
+issp_ci <- rio::import("../data/issp_ci.csv")
 
 ggplot(issp_ci, aes(x=reorder(cntry, mean_ratio_11_00), y=mean_ratio_11_00)) +
   geom_errorbar(aes(ymin=ci95lo, ymax=ci95hi), width=.1, position=position_dodge(0.1)) +
