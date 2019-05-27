@@ -81,14 +81,14 @@
 
 \setlength{\droptitle}{-2em}
 
-  \title{\vspace{1cm}Measuring political participation levels and inequality with survey data: Failed attempts*\footnote{*This is a draft. Do not quote, cite, or distribute. Funding: ``Political Voice and Economic Inequality across Nations and Time'', Poland's National Science Centre (2016/23/B/HS6/03916). \url{https://politicalinequality.org/2017/09/21/new-project-political-voice-and-economic-inequality-across-nations-and-time/}}\vspace{0.5cm}\\}
+  \title{\vspace{1cm}Measuring political participation levels and inequality with survey data: Failed attempts*\footnote{*This is a draft. Author of report and analysis: Marta Kołczyńska. Author of ideas: probably Maciek Słomczyński. Present in meetings: Irina Tomescu-Dubrow and Joshua Dubrow. Do not quote, cite, or distribute. Funding: ``Political Voice and Economic Inequality across Nations and Time'', Poland's National Science Centre (2016/23/B/HS6/03916). \url{https://politicalinequality.org/2017/09/21/new-project-political-voice-and-economic-inequality-across-nations-and-time/}}\vspace{0.5cm}\\}
     \pretitle{\vspace{\droptitle}\centering\huge}
   \posttitle{\par}
     \author{}
     \preauthor{}\postauthor{}
       \predate{\centering\large\emph}
   \postdate{\par}
-    \date{24 May, 2019\\
+    \date{27 May 2019\\
 ~\\}
 
 \usepackage[polish, english]{babel}
@@ -306,12 +306,16 @@ Five activities have been selected as part of non-electoral political participat
 
 Both ESS/7 and ISSP/2014 also ask about voting in last elections. Voting is considered separately from non-electoral political participation, and is only used in the third measure.
 
-\hypertarget{country-levels-of-participation-in-single-activities}{%
-\subsection{Country levels of participation in single activities}\label{country-levels-of-participation-in-single-activities}}
+\hypertarget{attempt-0-country-levels-of-participation-in-single-activities}{%
+\section{Attempt 0: Country levels of participation in single activities}\label{attempt-0-country-levels-of-participation-in-single-activities}}
 
-Thanks to the country overlap, it is possible to compare participation levels in the same countries from different projects. In both cases samples have been restricted to respondents aged 18-65. Appropriate case weights (\texttt{pspwgh} in ESS and \texttt{WEIGHT} in ISSP) were applied.
+If responses to survey items on past political behavior really correspond to reports of political behavior rather than the respondent's state of mind at the time of the survey, it could be expected that independent sample drawn in the same country and at the same time would yield similar levels of participation in the same activities. Data from ESS/7 and ISSP/2014 can be used to test whether this consistency exists in the countries included in both datasets.
 
-The scatter plot in Figure \ref{fig:part-rate-dot-plot} shows participation levels by country. Each dot is a country. Colors indicate the type of activity. In most cases the points are reasonably close to the 45-degree line. The only exception is work/active membership in political parties and other organizations, which might result from the differences in source variables and in the construction of the ``party'' indicator. Levels of contacting politicians are systematically higher in ESS than in ISSP, which is surprising given that the ISSP question also included ``attempted contact''.
+In both cases samples have been restricted to respondents aged 18-65. Appropriate case weights -- \texttt{pspwgh} in ESS and \texttt{WEIGHT} in ISSP -- were applied.
+
+The scatter plot in Figure \ref{fig:part-rate-dot-plot} shows participation levels by country. Each dot is a country. Colors indicate the type of activity. In most cases the points are relatively close to the 45-degree line. The only exception is work/active membership in political parties and other organizations, which might result from the differences in source variables and in the construction of the ``party'' indicator. Levels of contacting politicians are systematically higher in ESS than in ISSP, which is surprising given that the ISSP question also included ``attempted contact''.
+
+In 69 of the 90 cases the differnce in proportions is statistically significant under the assumptions of a two sample test of proportions difference. The size of the point indicates the value of the \(z\) statistic.
 
 \begin{figure}[H]
 
@@ -495,7 +499,9 @@ The fourth idea involved ranking countries by their level of participation in se
 
 In the fifth attempt the question was whether the extent to which political participation is associated with basic socio-demographic variables (age, gender, and education) varies across countries, and whether it is consistent within countries in the two survey projects, ESS and ISSP.
 
-Canonical correlations were calculated for five binary variables corresponding to the five activities on one side, and gender, age (3 categories) and education (3 categories) on the other. Figure \ref{fig:can-cor} shows the correlation coefficients for all countries covered by both ESS and ISSP. The correlation between both series is around 0.2.
+Canonical correlations were calculated for five binary variables corresponding to the five activities on one side, and gender, age (3 categories) and education (3 categories) on the other. Figure \ref{fig:can-cor} shows the correlation coefficients for all countries covered by both ESS and ISSP. The lowest correlation in the ESS is 0.19 in Czechia, and in ISSP - 0.15 in Hingary. Correlations exceed 0.3 in the ESS in Spain and Poland, and in ISSP - in Germany, Sweden, Slovenia, Finland, Austria, and Spain.
+
+The correlation between both series is around 0.2.
 
 \begin{figure}[H]
 
@@ -509,7 +515,7 @@ Canonical correlations were calculated for five binary variables corresponding t
 \hypertarget{attempt-6-sample-composition-re-weighting-samples}{%
 \section{Attempt 6: Sample composition: Re-weighting samples}\label{attempt-6-sample-composition-re-weighting-samples}}
 
-To account for possible sample composition differences, weights were calculated to adjust the gender*age*education groups in ISSP to their proportions in the ESS samples. Three age groups were considered -- 18-29, 30-49, 50-65 -- and three education groups - secondary, post-decondary non-tertiary, and tertiary education. Altogether this makes \(2*3*3=18\) combinations.
+While basic socio-demographics such as age, gender and education, account for a small proportion of the variation in reported political participation, it is possible that some of the differences between participation levels observed in the same countries in the ESS and ISSP are due to composition effects. To test the effect of these differences on estimates of participation levels, weights were calculated to adjust the gender*age*education groups in ISSP to their proportions in the ESS samples. Three age groups were considered -- 18-29, 30-49, 50-65 -- and three education groups - secondary, post-decondary non-tertiary, and tertiary education. Altogether this makes \(2*3*3=18\) combinations. Initial sample proportions were calculated using weighting factors available in each dataset - `pspwght' in ESS and `WEIGHT' in ISSP.
 
 Table \ref{tab:sample-re-weighting} shows correlations between sample proportions of respondents who reported participation in the five selected activities in the ESS and in the ISSP, and the same correlations between ESS and ISSP re-weighted to match sample proportions from the ESS. In all cases the correlations with the re-weighted data are weaker, with the largest difference for work in a political party (0.57 compared to 0.34), and smaller declines in the case of the other activities.
 
@@ -532,6 +538,16 @@ party & 0.565 & 0.341\\
 \end{table}
 
 While comparing the composition of ESS and ISSP samples is not the topic of this analysis, it is worth noting that the differences are relatively large, and they tend to be the largest among men, aged 30-49, with post-secondary non-tertiary education. For example, in the ESS in the Austrian sample the proportion of respondents in this category is 0.023, while in the ISSP the same proportion is 0.139. In the French sample in the ESS it is 0.152, compared to 0.026 in the ISSP.
+
+\hypertarget{hopscotch}{%
+\section{\texorpdfstring{\emph{Hopscotch}}{Hopscotch}}\label{hopscotch}}
+
+The ideas for measuing the inequality of political participation with cross-national survey data were presented and executed in the order as described above. With 7 exercises (counting Attempt 0 as an exercise), around five thousand different combinations are possible. The exercises can also be grouped in stories. Here is an example of a scenario.
+
+\hypertarget{section}{%
+\subsection{0 - 4 - 6 - 1}\label{section}}
+
+Attempt 0 showed that country participation levels in ESS and ISSP are very different. Even if participation levels are not exactly the same, maybe the country rankings are the same in ESS and ISSP? According to the results of Attempt 4 this is not the case. Then maybe it's a composition effect? The re-weighting of ISSP to match the joint distribution of age, gender, and education did not improve the correlations between participation levels in the two projects. What if weighting participation in activities instead of weighting participants could reconcile the two projects? In Attempt 1 the goal was to experiment with different types of weights to construct a single measure of political participation. Sample means of this weighted participation score were more consistent between samples than levels of participation in single activities.
 
 
 \end{document}
