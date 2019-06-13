@@ -66,7 +66,7 @@ This report describes six ideas that were intended to test various properties of
 The second idea was to calculate the heterogeneity of participation profiles, or sets of activities in which individuals participate or not participate. The third idea was to calculate the ratio of proportions of individuals who vote in elections and also engage in other forms of participation divided by the proportion of individuals who do none. The fourth idea involved ranking countries by their level of participation in separate activities to see if these rankings are consistent across ESS and ISSP. The fifth idea was about the extent to which participation is associated with age, gender, and education, and involved calculating canonical correlations of the set of socio-demographics and a set of participation dummies. Finally, the sixth idea was about adjusting the sample composition to match age, gender, and education distributions, to see if this brings closer the levels of participation recorded by both projects.
 
 
-```{r setup2, include=FALSE}
+```{r packages, include=FALSE}
 library(essurvey) # import ESS data
 library(tidyverse) # manipulating data
 library(rio) # easy importing of data into R
@@ -87,7 +87,17 @@ require(CCA) # canonical correlations
 
 myPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
 
+```
+
+```{r getting-data, include=FALSE}
+
 ### ESS data
+
+# downloading ESS data
+# ess7_full <- import_rounds(7, ess_email = "email@email") %>%
+#   select(idno, cntry, pspwght, wrkorg, wrkprty, pbldmn, contplt, 
+#          sgnptit, bctprd, vote, gndr, eisced, agea, polintr) %>%
+#   recode_missings()
 
 ess7_full <- import("../data/ess7_full.csv")
 
@@ -121,6 +131,7 @@ ess_part_vars <- c("party_org", "demo", "contact", "petition", "boycott")
 
 ### ISSP data
 
+# Data source: https://dbk.gesis.org/dbksearch/sdesc2.asp?no=6670
 issp2014_full <- import("C:/Users/mkolc/Google Drive/Work in progress/POLINQ priv/Data/ISSP 2014/ZA6670_v2-0-0.dta")
 
 issp2014 <- issp2014_full %>%
@@ -154,10 +165,9 @@ issp2014 <- issp2014_full %>%
   ungroup()
 
 issp_part_vars <- c("party_tradeu", "demo_rally", "contact", "petition", "boycott")
+```
 
-issp_cntry <- issp2014 %>% group_by(cntry) %>% 
-  summarise_at(issp_part_vars, funs(weighted.mean(., WEIGHT)), na.rm = TRUE)
-
+```{r polpart-levels-inequality, include=FALSE}
 
 ### ESS weights and polpart ------------------------------
 
