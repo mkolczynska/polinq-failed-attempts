@@ -2,7 +2,7 @@
 title: |
   |
   | 
-  | \vspace{1cm}Measuring political participation levels and inequality with survey data: Failed attempts*^[*This is a draft. Author of report and analysis: Marta Kołczyńska. Author of ideas: probably Maciek Słomczyński. Present in meetings: Irina Tomescu-Dubrow and Joshua Dubrow. Do not quote, cite, or distribute. Funding: "Political Voice and Economic Inequality across Nations and Time", Poland’s National Science Centre (2016/23/B/HS6/03916). https://politicalinequality.org/2017/09/21/new-project-political-voice-and-economic-inequality-across-nations-and-time/]\vspace{0.5cm}
+  | \vspace{1cm}Measuring political participation levels and inequality with survey data: Failed attempts*^[*This is a draft. Author of report and analysis: Marta Kołczyńska. Ideas presented by Maciek Słomczyński. Present in meetings: Irina Tomescu-Dubrow and Joshua Dubrow. Do not quote, cite, or distribute. Funding: "Political Voice and Economic Inequality across Nations and Time", Poland’s National Science Centre (2016/23/B/HS6/03916). https://politicalinequality.org/2017/09/21/new-project-political-voice-and-economic-inequality-across-nations-and-time/]\vspace{0.5cm}
   |
 author: |
   | 
@@ -926,7 +926,7 @@ While comparing the composition of ESS and ISSP samples is not the topic of this
 
 # *Hopscotch*
 
-The ideas for measuing the inequality of political participation with cross-national survey data were presented and executed in the order as described above. With 7 exercises (counting Attempt 0 as an exercise), around five thousand different combinations are possible. The exercises can also be grouped in stories. Here is an example of a scenario.
+The ideas for measuing the inequality of political participation with cross-national survey data were presented and executed in the order as described above. With 7 exercises (counting Attempt 0 as a separate exercise), around five thousand different combinations are possible. The exercises can also be grouped in stories. Here is an example of a scenario.
 
 ## 0 - 4 - 6 - 1
 

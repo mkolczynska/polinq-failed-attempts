@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2018/W32TeX) (preloaded format=pdflatex 2019.3.29)  13 JUN 2019 16:10
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2018/W32TeX) (preloaded format=pdflatex 2019.3.29)  5 JUL 2019 21:45
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1399,15 +1399,21 @@ LaTeX Font Info:    Font shape `TS1/mdbch/m/n' will be
 (Font)              scaled to size 6.72005pt on input line 197.
 Missing character: There is no * in font mdbchr8c!
 
-Underfull \hbox (badness 1603) in paragraph at lines 197--197
+Underfull \hbox (badness 1946) in paragraph at lines 197--197
 [][] [][][]\T1/mdbch/m/n/10 (+20) *This is a draft. Au-thor of re-port and anal
--y-sis: Marta Koªczy«ska. Au-thor of ideas: prob-a-
+-y-sis: Marta Koªczy«ska. Ideas pre-sented by Ma-
  []
 
 
-Underfull \hbox (badness 1215) in paragraph at lines 197--197
-\T1/mdbch/m/n/10 (+20) bly Ma-ciek Sªom-czy«ski. Present in meet-ings: Irina To
-mescu-Dubrow and Joshua Dubrow. Do not
+Underfull \hbox (badness 1259) in paragraph at lines 197--197
+\T1/mdbch/m/n/10 (+20) ciek Sªom-czy«ski. Present in meet-ings: Irina Tomescu-D
+ubrow and Joshua Dubrow. Do not quote,
+ []
+
+
+Underfull \hbox (badness 3108) in paragraph at lines 197--197
+\T1/mdbch/m/n/10 (+20) cite, or dis-tribute. Fund-ing: ``Po-lit-i-cal Voice and
+ Eco-nomic In-equal-ity across Na-tions and Time'',
  []
 
 LaTeX Font Info:    Font shape `T1/mdbch/m/n' will be
@@ -1696,7 +1702,7 @@ Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 553.
 Here is how much of TeX's memory you used:
  19444 strings out of 494527
  308936 string characters out of 6175008
- 408025 words of memory out of 5000000
+ 408009 words of memory out of 5000000
  22418 multiletter control sequences out of 15000+600000
  131703 words of font info for 399 fonts, out of 8000000 for 9000
  34 hyphenation exceptions out of 8191
@@ -1717,7 +1723,7 @@ TinyTeX/texmf-dist/fonts/type1/public/mathdesign/mdbch/md-chr7y.pfb><c:/Users/m
 kolc/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/mathdesign/mdbch/md-
 chr8t.pfb><c:/Users/mkolc/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public
 /mathdesign/mdbch/md-chri7m.pfb>
-Output written on report.pdf (18 pages, 190352 bytes).
+Output written on report.pdf (18 pages, 190317 bytes).
 PDF statistics:
  371 PDF objects out of 1000 (max. 8388607)
  316 compressed objects within 4 object streams
